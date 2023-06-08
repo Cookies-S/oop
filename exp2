@@ -1,0 +1,76 @@
+package Experiments_Programs;
+import java.util.Scanner;
+
+ class Complex {
+  float real, imag;
+  Complex()
+  {
+    real=0.0f;
+    imag=0.0f;
+  }
+  Complex (float r1, float i1)
+  {
+    this.real=r1;
+    this.imag=i1;
+  }
+  public void add (Complex c1, Complex c2)
+  {
+    real = c1.real + c2.real;
+    imag = c1.imag + c2.imag;
+  }
+  public void sub (Complex c1, Complex c2)
+  {
+    real = c1.real - c2.real;
+    imag = c1.imag - c2.imag;
+  }
+  public void mul (Complex c1, Complex c2)
+  {
+    real = c1.real * c2.real;
+    imag = c1.imag * c2.imag;
+  }
+  public void div (Complex c1, Complex c2)
+  {
+    real = c1.real / c2.real;
+    imag = c1.imag / c2.imag;
+  }
+  void display()
+  {
+    System.out.println(real + " + (" + imag +")i");
+  }
+  public static void main (String[] args)
+  //check for bracket
+  {
+    Scanner sc = new Scanner (System.in);
+    System.out.print("Enter the 1st Real no:");
+    float real = sc.nextFloat();
+    System.out.print("Enter the 1st Imaginary no:");
+    float imag = sc.nextFloat();
+
+    System.out.print("Enter the 2nd Real no:");
+    float real1 = sc.nextFloat();
+    System.out.print("Enter the 2nd Imaginary no:");
+    float imag1 = sc.nextFloat();
+
+
+    System.out.println("1st Complex number: "+ real + " + (" + imag +")i");
+    System.out.println("2nd Complex number: "+ real1 + " + (" + imag1 +")i");
+    
+    Complex c1 = new Complex(real, imag);
+    Complex c2 = new Complex(real1, imag1);
+    Complex c3 = new Complex();
+
+    c3.add (c1, c2);
+    System.out.print("\nAddition is: ");
+    c3.display();
+    c3.sub(c1, c2);
+    System.out.print("\nSubtraction is: ");
+    c3.display();
+    c3.mul(c1, c2);
+    System.out.print("\nMultiplication is: ");
+    c3.display();
+    c3.div(c1, c2);
+    System.out.print("\nDivision is: ");
+    c3.display();
+  }
+  
+  }
