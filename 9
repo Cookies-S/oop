@@ -1,0 +1,61 @@
+create procedure helloworld()
+begin
+select "Helloworld" as Message;
+end$$
+
+
+create procedure calsqrt(num1 int)
+begin
+declare result int;
+set result=sqrt(num1);
+select result;
+end$$
+
+
+create procedure evenodd(num1 int)
+begin
+if mod(num1,2)=0 then
+select "Even Number";
+else
+select "Odd Number";
+end if;
+end$$
+
+
+
+create procedure displaysalary(eid int)
+begin
+declare sal int;
+select salary into sal from employee where id=eid;
+select sal;
+end$$
+
+
+
+
+create function calsqrt(num1 int)
+returns int
+deterministic
+begin
+declare result int;
+set result=sqrt(num1);
+return(result);
+end$$
+
+
+
+
+create function displaysalary(eid int)
+returns varchar(20)
+deterministic
+begin
+declare sal int;
+declare class varchar(20);
+select salary into sal from employee where id=eid;
+if sal>100000 then
+set class="Class-I";
+else 
+set class="Class-II";
+end if;
+return(class);
+end$$
