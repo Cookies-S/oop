@@ -1,0 +1,680 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.1.44-community MySQL Community Server (GPL)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use mydb;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_mydb |
++----------------+
+| department     |
+| emp            |
+| employee       |
+| project        |
++----------------+
+4 rows in set (0.01 sec)
+
+mysql> desc employee;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| empid     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| ename     | varchar(20) | NO   |     | NULL    |                |
+| contactno | int(11)     | YES  | UNI | NULL    |                |
+| salary    | int(11)     | YES  |     | NULL    |                |
+| did       | int(11)     | YES  | MUL | NULL    |                |
+| Pid       | int(11)     | YES  | MUL | NULL    |                |
+| doj       | date        | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+7 rows in set (0.01 sec)
+
+mysql> desc department;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| did   | int(11)     | NO   | PRI | NULL    |       |
+| dname | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc project;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Pid   | int(11)     | NO   | PRI | NULL    |       |
+| Pname | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee;
+Empty set (0.00 sec)
+
+mysql> select * from department;
+Empty set (0.00 sec)
+
+mysql> select * from project;
+Empty set (0.00 sec)
+
+mysql> insert into employee values(1, 'Amit', 9890, 15000, 11, 101, '2012-01-01');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`mydb`.`employee`, CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`did`) REFERENCES `department` (`did`))
+mysql> insert into department values(11, 'ADMIN');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values(1, 'Amit', 9890, 15000, 11, 101, '2012-01-01');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`mydb`.`employee`, CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`Pid`) REFERENCES `project` (`Pid`))
+mysql> insert into project values(101, 'P1');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values(1, 'Amit', 9890, 15000, 11, 101, '2012-01-01');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into department values(12, 'FIN');)
+Query OK, 1 row affected (0.02 sec)
+
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select * from department;
++-----+-------+
+| did | dname |
++-----+-------+
+|  11 | ADMIN |
+|  12 | FIN   |
++-----+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into project values(102, 'P2');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from project;
++-----+-------+
+| Pid | Pname |
++-----+-------+
+| 101 | P1    |
+| 102 | P2    |
++-----+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into employee values(2, 'Aman', 9891, 12000, 11, 101, '2014-05-01');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values(3, 'Sachin', 9892, 20000, 12, 102, '2012-05-01');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(4, 'Abhishek', 9894, 25000, 12, 102, '2012-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into employee values(4, 'Abhishek', 9894, 25000, 12, null, '2012-06-01');
+ERROR 1062 (23000): Duplicate entry '4' for key 'PRIMARY'
+mysql> insert into employee values(5, 'Abhijeet', 9894, 25000, 12, null, '2015-01-01');
+ERROR 1062 (23000): Duplicate entry '9894' for key 'contactno'
+mysql> insert into employee values(5, 'Abhijeet', 9895, 25000, 12, null, '2015-01-01');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from employee;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee where pid=null;
+Empty set (0.04 sec)
+
+mysql> select * from employee where pid is null;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where pid is not null;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>=20000;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>20000 and did=102;
+Empty set (0.01 sec)
+
+mysql> select * from employee where salary>20000 and pid=102;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where did<>11;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where doj>='2012-01-01' and doj<='2012-12-31';
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where doj>='2012-01-01' and doj<='2012-12-31' and did=12;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where doj between ('2012-01-01' and '2012-12-31');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from employee where doj between '2012-01-01' and '2012-12-31';
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
++-------+----------+-----------+--------+------+------+------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from employee where ename like 'A%';
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+4 rows in set (0.02 sec)
+
+mysql> select * from employee where ename like 'A%' and pid=101;
++-------+-------+-----------+--------+------+------+------------+
+| empid | ename | contactno | salary | did  | Pid  | doj        |
++-------+-------+-----------+--------+------+------+------------+
+|     1 | Amit  |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman  |      9891 |  12000 |   11 |  101 | 2014-05-01 |
++-------+-------+-----------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where ename like '____';
++-------+-------+-----------+--------+------+------+------------+
+| empid | ename | contactno | salary | did  | Pid  | doj        |
++-------+-------+-----------+--------+------+------+------------+
+|     1 | Amit  |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman  |      9891 |  12000 |   11 |  101 | 2014-05-01 |
++-------+-------+-----------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1
+Server version: 5.1.44-community MySQL Community Server (GPL)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mydb               |
+| mydb1              |
+| mydb2              |
+| mydb3              |
+| mysql              |
+| test               |
++--------------------+
+7 rows in set (0.12 sec)
+
+mysql> use mydb;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_mydb |
++----------------+
+| department     |
+| emp            |
+| employee       |
+| project        |
++----------------+
+4 rows in set (0.12 sec)
+
+mysql> select * from employee;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+5 rows in set (0.02 sec)
+
+mysql> select * from department;
++-----+-------+
+| did | dname |
++-----+-------+
+|  11 | ADMIN |
+|  12 | FIN   |
++-----+-------+
+2 rows in set (0.00 sec)
+
+mysql> select ucase(ename) from employee;
++--------------+
+| ucase(ename) |
++--------------+
+| AMIT         |
+| AMAN         |
+| SACHIN       |
+| ABHISHEK     |
+| ABHIJEET     |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> select length(ename) from employee;
++---------------+
+| length(ename) |
++---------------+
+|             4 |
+|             4 |
+|             6 |
+|             8 |
+|             8 |
++---------------+
+5 rows in set (0.00 sec)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2021-03-01 11:32:12 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select date('2021-03-01 11:32:12')
+    -> ;
++-----------------------------+
+| date('2021-03-01 11:32:12') |
++-----------------------------+
+| 2021-03-01                  |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date(now());
++-------------+
+| date(now()) |
++-------------+
+| 2021-03-01  |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select time(now());
++-------------+
+| time(now()) |
++-------------+
+| 11:33:30    |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select bin(contactno) from employee;
++----------------+
+| bin(contactno) |
++----------------+
+| 10011010100010 |
+| 10011010100011 |
+| 10011010100100 |
+| 10011010100110 |
+| 10011010100111 |
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> select abs(contactno) from employee;
++----------------+
+| abs(contactno) |
++----------------+
+|           9890 |
+|           9891 |
+|           9892 |
+|           9894 |
+|           9895 |
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> select substr(ename,0,4) from employee;
++-------------------+
+| substr(ename,0,4) |
++-------------------+
+|                   |
+|                   |
+|                   |
+|                   |
+|                   |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select substr(ename,1,4) from employee;
++-------------------+
+| substr(ename,1,4) |
++-------------------+
+| Amit              |
+| Aman              |
+| Sach              |
+| Abhi              |
+| Abhi              |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(salary) from employee;
++-------------+
+| sum(salary) |
++-------------+
+|       97000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(empid) from employee;
++--------------+
+| count(empid) |
++--------------+
+|            5 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select min(salary) from employee;
++-------------+
+| min(salary) |
++-------------+
+|       12000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|       25000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) from employee;
++-------------+
+| avg(salary) |
++-------------+
+|  19400.0000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(empid) from employee where doj between '2012-01-01' and '2012-12-31';
++--------------+
+| count(empid) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select did, sum(salary) from employee group by did;
++------+-------------+
+| did  | sum(salary) |
++------+-------------+
+|   11 |       27000 |
+|   12 |       70000 |
++------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select did, sum(salary) from employee group by did having sum(salary)>30000;
++------+-------------+
+| did  | sum(salary) |
++------+-------------+
+|   12 |       70000 |
++------+-------------+
+1 row in set (0.00 sec)
+
+mysql> select did, sum(salary) as totsalary from employee group by did having sum(salary)>30000;
++------+-----------+
+| did  | totsalary |
++------+-----------+
+|   12 |     70000 |
++------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select ename, dname from employee, department;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Amit     | FIN   |
+| Aman     | ADMIN |
+| Aman     | FIN   |
+| Sachin   | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | ADMIN |
+| Abhishek | FIN   |
+| Abhijeet | ADMIN |
+| Abhijeet | FIN   |
++----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select ename, dname from employee, department where employee.did=department.did;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Aman     | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | FIN   |
+| Abhijeet | FIN   |
++----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from employee natural join department;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Aman     | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | FIN   |
+| Abhijeet | FIN   |
++----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from employee inner join department on employee.did=department.did;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Aman     | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | FIN   |
+| Abhijeet | FIN   |
++----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from employee left join department on employee.did=department.did;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Aman     | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | FIN   |
+| Abhijeet | FIN   |
++----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Employee;
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Department;
++-----+-------+
+| did | dname |
++-----+-------+
+|  11 | ADMIN |
+|  12 | FIN   |
++-----+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into department values(13, 'IT');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select ename, dname from employee right join department on employee.did=department.did;
++----------+-------+
+| ename    | dname |
++----------+-------+
+| Amit     | ADMIN |
+| Aman     | ADMIN |
+| Sachin   | FIN   |
+| Abhishek | FIN   |
+| Abhijeet | FIN   |
+| NULL     | IT    |
++----------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee right join department on employee.did=department.did;
++-------+----------+-----------+--------+------+------+------------+-----+-------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        | did | dname |
++-------+----------+-----------+--------+------+------+------------+-----+-------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |  11 | ADMIN |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |  11 | ADMIN |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |  12 | FIN   |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |  12 | FIN   |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |  12 | FIN   |
+|  NULL | NULL     |      NULL |   NULL | NULL | NULL | NULL       |  13 | IT    |
++-------+----------+-----------+--------+------+------+------------+-----+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee where salary in (select max(salary) from employee);
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee as e1, employee as e2 where e1.empid=e2.empid and e1.salary>e2.salary;
+Empty set (0.00 sec)
+
+mysql> select * from employee as e1, employee as e2 where e1.empid=e2.empid and e1.salary>=e2.salary;
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        | empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee as e1, employee as e2 where e1.empid=e2.empid and e1.salary>=e2.salary;
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        | empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |     2 | Aman     |      9891 |  12000 |   11 |  101 | 2014-05-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+-------+----------+-----------+--------+------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Employee where salary>=all(select salary from employee);
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>any(select salary from employee where did=11);
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>some(select salary from employee where did=11);
++-------+----------+-----------+--------+------+------+------------+
+| empid | ename    | contactno | salary | did  | Pid  | doj        |
++-------+----------+-----------+--------+------+------+------------+
+|     1 | Amit     |      9890 |  15000 |   11 |  101 | 2012-01-01 |
+|     3 | Sachin   |      9892 |  20000 |   12 |  102 | 2012-05-01 |
+|     4 | Abhishek |      9894 |  25000 |   12 |  102 | 2012-06-01 |
+|     5 | Abhijeet |      9895 |  25000 |   12 | NULL | 2015-01-01 |
++-------+----------+-----------+--------+------+------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select salary+15000 from employee;
++--------------+
+| salary+15000 |
++--------------+
+|        30000 |
+|        27000 |
+|        35000 |
+|        40000 |
+|        40000 |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql>
