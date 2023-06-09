@@ -1,0 +1,121 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use db
+Database changed
+
+mysql> CREATE TABLE EMPLOYEE1(EMPNO INT, EMP_NAME VARCHAR(10), ADDRESS VARCHAR(10), SALARY INT, DOJ DATE);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE1 VALUES(1, "MADHAVI", "PUNE", 1000, "2001-12-24"), (2, "ANVI", "NAGAR", 2000, "2002-05-27"), (3, "KOMAL", "PUNE", 3000, "2003-04-23"), (4, "PRIYA", "NAGAR", 4000, "2004-07-28"), (5, "SHITAL", "NANDED", 5000, "2005-03-28");
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE1;
++-------+----------+---------+--------+------------+
+| EMPNO | EMP_NAME | ADDRESS | SALARY | DOJ        |
++-------+----------+---------+--------+------------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 |
++-------+----------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE
+    -> ADD ZONE VARCHAR(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE1;
++-------+----------+---------+--------+------------+
+| EMPNO | EMP_NAME | ADDRESS | SALARY | DOJ        |
++-------+----------+---------+--------+------------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 |
++-------+----------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE1
+    -> ADD ZONE VARCHAR(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE1;
++-------+----------+---------+--------+------------+------+
+| EMPNO | EMP_NAME | ADDRESS | SALARY | DOJ        | ZONE |
++-------+----------+---------+--------+------------+------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 | NULL |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 | NULL |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 | NULL |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 | NULL |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 | NULL |
++-------+----------+---------+--------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEE1
+    -> MODIFY ADDRESS VARCHAR(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE1;
++-------+----------+---------+--------+------------+------+
+| EMPNO | EMP_NAME | ADDRESS | SALARY | DOJ        | ZONE |
++-------+----------+---------+--------+------------+------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 | NULL |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 | NULL |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 | NULL |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 | NULL |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 | NULL |
++-------+----------+---------+--------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> RENAME TABLE EMPLOYEE1 TO EMPLOYEE2;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE1;
+ERROR 1146 (42S02): Table 'db.employee1' doesn't exist
+mysql> SELECT * FROM EMPLOYEE2;
++-------+----------+---------+--------+------------+------+
+| EMPNO | EMP_NAME | ADDRESS | SALARY | DOJ        | ZONE |
++-------+----------+---------+--------+------------+------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 | NULL |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 | NULL |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 | NULL |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 | NULL |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 | NULL |
++-------+----------+---------+--------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql>  ALTER TABLE EMPLOYEE2 CHANGE EMPNO EMPID INT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE2;
++-------+----------+---------+--------+------------+------+
+| EMPID | EMP_NAME | ADDRESS | SALARY | DOJ        | ZONE |
++-------+----------+---------+--------+------------+------+
+|     1 | MADHAVI  | PUNE    |   1000 | 2001-12-24 | NULL |
+|     2 | ANVI     | NAGAR   |   2000 | 2002-05-27 | NULL |
+|     3 | KOMAL    | PUNE    |   3000 | 2003-04-23 | NULL |
+|     4 | PRIYA    | NAGAR   |   4000 | 2004-07-28 | NULL |
+|     5 | SHITAL   | NANDED  |   5000 | 2005-03-28 | NULL |
++-------+----------+---------+--------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql>
