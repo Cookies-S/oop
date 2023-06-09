@@ -1,0 +1,168 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db                 |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use db
+Database changed
+mysql> use mysql
+Database changed
+mysql> create table stud1(Rollno integer (10) ,Firstname varchar (35),LastName varchar(20),
+    -> age integer (50), constraint PK_stud1 primary key (Rollno,Firstname));
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> desc stud1;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Rollno    | int(10)     | NO   | PRI | NULL    |       |
+| Firstname | varchar(35) | NO   | PRI | NULL    |       |
+| LastName  | varchar(20) | YES  |     | NULL    |       |
+| age       | int(50)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into stud1 values(101,"Madhavi","Mohite",19),(102,"Komal","Shinde",20),(103,"Sakshi","Mane",18),(104,"Prachi","Patil",21);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud1;
++--------+-----------+----------+------+
+| Rollno | Firstname | LastName | age  |
++--------+-----------+----------+------+
+|    101 | Madhavi   | Mohite   |   19 |
+|    102 | Komal     | Shinde   |   20 |
+|    103 | Sakshi    | Mane     |   18 |
+|    104 | Prachi    | Patil    |   21 |
++--------+-----------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> create table stud2(Rollno integer (10) ,Firstname varchar (35),LastName varchar(20),
+    -> age integer (50));
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> alter table stud2 add constraint PK_stud primary key(Rollno,lastname);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into stud2 values(101,"Madhavi","Mohite",19),(102,"Komal","Shinde",20),(103,"Sakshi","Mane",18),(104,"Prachi","Patil",21);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud2;
++--------+-----------+----------+------+
+| Rollno | Firstname | LastName | age  |
++--------+-----------+----------+------+
+|    101 | Madhavi   | Mohite   |   19 |
+|    102 | Komal     | Shinde   |   20 |
+|    103 | Sakshi    | Mane     |   18 |
+|    104 | Prachi    | Patil    |   21 |
++--------+-----------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> create table pushkar(Rollno integer (10) primary key ,Firstname varchar (35),LastName
+    -> age integer (50));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'age integer (50))' at line 2
+mysql> create table pushkar(Rollno integer (10) primary key ,Firstname varchar (35),LastName
+    -> varchar(20), age integer (50));
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> insert into stud2 values(101,"Madhavi","Mohite",19),(102,"Komal","Shinde",20),(102,"Sakshi","Mane",18),(104,"Prachi","Patil",21);
+ERROR 1062 (23000): Duplicate entry '101-Mohite' for key 'PRIMARY'
+mysql> insert into stud2 values(101,"Madhavi","Mohite",19),(102,"Komal","Shinde",20),(103,"Sakshi","Mane",18),(104,"Prachi","Patil",21);
+ERROR 1062 (23000): Duplicate entry '101-Mohite' for key 'PRIMARY'
+mysql> insert into stud2 values(100,"Madhavi","Mohite",19),(102,"Komal","Shinde",20),(103,"Sakshi","Mane",18),(104,"Prachi","Patil",21);
+ERROR 1062 (23000): Duplicate entry '102-Shinde' for key 'PRIMARY'
+mysql> insert into stud2 values(100,"Madhavi","Mohite",19),(101,"Komal","Shinde",20),(102,"Sakshi","Mane",18),(103,"Prachi","Patil",21);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from pushkar;
+Empty set (0.00 sec)
+
+mysql> insert into puskar values(100,"Madhavi","Mohite",19),(101,"Komal","Shinde",20),(102,"Sakshi","Mane",18),(103,"Prachi","Patil",21);
+ERROR 1146 (42S02): Table 'mysql.puskar' doesn't exist
+mysql> insert into pushkar values(100,"Madhavi","Mohite",19),(101,"Komal","Shinde",20),(102,"Sakshi","Mane",18),(103,"Prachi","Patil",21);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from pushkar;
++--------+-----------+----------+------+
+| Rollno | Firstname | LastName | age  |
++--------+-----------+----------+------+
+|    100 | Madhavi   | Mohite   |   19 |
+|    101 | Komal     | Shinde   |   20 |
+|    102 | Sakshi    | Mane     |   18 |
+|    103 | Prachi    | Patil    |   21 |
++--------+-----------+----------+------+
+4 rows in set (0.00 sec)
+
+
+mysql> create table student(Rollno integer(10),Firstname varchar(35),LastName varchar(20),age integer(50),EnoNo integer (53)primary key,foreign key(Rollno) references pushkar(RollNo));
+Query OK, 0 rows affected, 3 warnings (0.04 sec)
+
+mysql> insert into student values(100,"Madhavi","Mohite",19,1),(101,"Komal","Shinde",20,2),(102,"Sakshi","Mane",18,3),(103,"Prachi","Patil",21,4);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+-----------+----------+------+-------+
+| Rollno | Firstname | LastName | age  | EnoNo |
++--------+-----------+----------+------+-------+
+|    100 | Madhavi   | Mohite   |   19 |     1 |
+|    101 | Komal     | Shinde   |   20 |     2 |
+|    102 | Sakshi    | Mane     |   18 |     3 |
+|    103 | Prachi    | Patil    |   21 |     4 |
++--------+-----------+----------+------+-------+
+4 rows in set (0.00 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from student;
+ERROR 1146 (42S02): Table 'mysql.student' doesn't exist
+mysql> alter table stud1 add Email varchar(255);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud1;
++--------+-----------+----------+------+-------+
+| Rollno | Firstname | LastName | age  | Email |
++--------+-----------+----------+------+-------+
+|    101 | Madhavi   | Mohite   |   19 | NULL  |
+|    102 | Komal     | Shinde   |   20 | NULL  |
+|    103 | Sakshi    | Mane     |   18 | NULL  |
+|    104 | Prachi    | Patil    |   21 | NULL  |
++--------+-----------+----------+------+-------+
+4 rows in set (0.00 sec)
+
+mysql> truncate table stud2;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from stud2;
+Empty set (0.00 sec)
+
+mysql>
