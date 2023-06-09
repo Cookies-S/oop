@@ -1,0 +1,24 @@
+delimiter $$
+
+drop procedure if exists empcursor$$
+create procedure empcursor()
+begin
+declare eid int;
+declare esal int;
+declare flag int default 0;
+declare c1 cursor for select id, salary from emp;
+declare continue handler for not found set flag=1;
+open c1;
+emp_loop : loop
+fetch c1 into eid, esal;
+if flag=1 then
+leave emp_loop;
+end if;
+if esal<50000 then 
+select eid, 'Class II';
+else 
+select eid, 'Class I';
+end if;
+end loop emp_loop;
+close c1;
+end$$
