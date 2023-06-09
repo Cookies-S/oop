@@ -1,0 +1,175 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 24
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE TABLE student (stu_id int(5) PRIMARY KEY , stu_name
+    -> varchar(10) , stu_age int(5) NOT NULL);
+ERROR 1046 (3D000): No database selected
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db                 |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.01 sec)
+
+mysql> use db;
+Database changed
+mysql> CREATE TABLE student (stu_id int(5) PRIMARY KEY , stu_name
+    -> varchar(10) , stu_age int(5) NOT NULL);
+Query OK, 0 rows affected, 2 warnings (0.02 sec)
+
+mysql> desc student;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| stu_id   | int(5)      | NO   | PRI | NULL    |       |
+| stu_name | varchar(10) | YES  |     | NULL    |       |
+| stu_age  | int(5)      | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student values(101,"Madhavi",19),(102,"Komal",20),(103,"Anagha",20),(104,"Arati",22),(105,"Sakshi",21),(106,"Ananya",18),(107,"Priti",24),(108,"Aarya",17),(109,"Anvi",23);
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+----------+---------+
+| stu_id | stu_name | stu_age |
++--------+----------+---------+
+|    101 | Madhavi  |      19 |
+|    102 | Komal    |      20 |
+|    103 | Anagha   |      20 |
+|    104 | Arati    |      22 |
+|    105 | Sakshi   |      21 |
+|    106 | Ananya   |      18 |
+|    107 | Priti    |      24 |
+|    108 | Aarya    |      17 |
+|    109 | Anvi     |      23 |
++--------+----------+---------+
+9 rows in set (0.00 sec)
+
+mysql> create view stuview as
+    -> select stu_id,stu_name
+    -> from student
+    -> where stu_age>20;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc stuview;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| stu_id   | int(5)      | NO   |     | NULL    |       |
+| stu_name | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stuview;
++--------+----------+
+| stu_id | stu_name |
++--------+----------+
+|    104 | Arati    |
+|    105 | Sakshi   |
+|    107 | Priti    |
+|    109 | Anvi     |
++--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student;
++--------+----------+---------+
+| stu_id | stu_name | stu_age |
++--------+----------+---------+
+|    101 | Madhavi  |      19 |
+|    102 | Komal    |      20 |
+|    103 | Anagha   |      20 |
+|    104 | Arati    |      22 |
+|    105 | Sakshi   |      21 |
+|    106 | Ananya   |      18 |
+|    107 | Priti    |      24 |
+|    108 | Aarya    |      17 |
+|    109 | Anvi     |      23 |
++--------+----------+---------+
+9 rows in set (0.00 sec)
+
+mysql> CREATE TABLE bag( notebk varchar(10) , book_id int PRIMARY KEY,
+    -> stu_id int(5) , FOREIGN KEY(stu_id) REFERENCES student(stu_id));
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+mysql> desc bag;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| notebk  | varchar(10) | YES  |     | NULL    |       |
+| book_id | int(11)     | NO   | PRI | NULL    |       |
+| stu_id  | int(5)      | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from bag;
+Empty set (0.00 sec)
+
+mysql> insert into bag values("DBMS",201,101),("CG",202,102),("M3",203,103),("DM",204,104),("SE",205,105);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from bag;
++--------+---------+--------+
+| notebk | book_id | stu_id |
++--------+---------+--------+
+| DBMS   |     201 |    101 |
+| CG     |     202 |    102 |
+| M3     |     203 |    103 |
+| DM     |     204 |    104 |
+| SE     |     205 |    105 |
++--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> create view stubagview as
+    -> select student.stu_id,bag.book_id
+    -> from student,bag
+    -> where student.stu_id=bag.stu_id;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc stubagview;
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| stu_id  | int(5)  | NO   |     | NULL    |       |
+| book_id | int(11) | NO   |     | NULL    |       |
++---------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stubagview;
++--------+---------+
+| stu_id | book_id |
++--------+---------+
+|    101 |     201 |
+|    102 |     202 |
+|    103 |     203 |
+|    104 |     204 |
+|    105 |     205 |
++--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> drop view stubagview;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from stubagview;
+ERROR 1146 (42S02): Table 'db.stubagview' doesn't exist
+mysql>
